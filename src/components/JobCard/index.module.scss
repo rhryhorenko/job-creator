@@ -1,0 +1,11 @@
+.jobCard{
+    width: 100%;
+    background: rgba(138, 137, 137, 0.3);
+    padding: 5px 25px;
+    border-bottom: 1px solid #475790;
+
+    &:hover{
+        cursor: pointer;
+        background: rgba(83, 83, 83, 0.3);
+    }
+}
