@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import styles from "./index.module.scss";
-import {
-  validateRequiredInputs,
-  validateTitle,
-  validateDescription,
-} from "./validations";
 
 const PostJobForm = ({ onSubmit }) => {
   const [state, setState] = useState({
@@ -13,27 +8,18 @@ const PostJobForm = ({ onSubmit }) => {
     isEnabled: false,
   });
 
-  const onCheckboxChange = () => {
-    setState({
-      ...state,
-      isEnabled: !state.isEnabled,
-    });
-  };
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
 
-  const onTitleChange = ({ target: { value } }) => {
-    if (validateTitle(value)) {
+    if (name === "isEnabled") {
       setState({
         ...state,
-        title: value,
+        isEnabled: !state.isEnabled,
       });
-    }
-  };
-
-  const onDescriptionChange = ({ target: { value } }) => {
-    if (validateDescription(value)) {
+    } else {
       setState({
         ...state,
-        description: value,
+        [name]: value,
       });
     }
   };
@@ -47,27 +33,36 @@ const PostJobForm = ({ onSubmit }) => {
     <form className={styles.postForm}>
       <label>
         <p>Title</p>
-        <input onChange={onTitleChange} value={state.title} name="title" />
+        <input
+          onChange={onInputChange}
+          value={state.title}
+          name="title"
+          maxLength={150}
+        />
       </label>
       <label>
         <p>Description</p>
         <textarea
           rows={7}
-          onChange={onDescriptionChange}
+          onChange={onInputChange}
           value={state.description}
           name="description"
+          maxLength={500}
         />
       </label>
       <label>
         <p>Enabled</p>
         <input
           type="checkbox"
-          onChange={onCheckboxChange}
+          onChange={onInputChange}
           checked={state.isEnabled}
           name="isEnabled"
         />
       </label>
-      <button onClick={handleSubmit} disabled={validateRequiredInputs(state)}>
+      <button
+        onClick={handleSubmit}
+        disabled={!state.title.trim() || !state.description.trim()}
+      >
         Post
       </button>
     </form>
